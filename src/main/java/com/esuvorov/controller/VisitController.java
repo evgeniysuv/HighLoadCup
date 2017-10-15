@@ -28,11 +28,19 @@ public class VisitController {
         return visitService.getVisitById(visitId);
     }
 
-    @GetMapping(value = "/users/{id}/visits")
-    public List<Visit> getVisitsByUser(@PathVariable long id,
-                                       @RequestParam("fromDate") long fromDate,
-                                       @RequestParam("toDate") long toDate) {
-        Sort ascVisitedAt = Sort.by(Sort.Direction.ASC, "visitedAt");
-        return visitService.getVisitByUserAndWith(id, fromDate, toDate, ascVisitedAt);
+    @GetMapping(value = "/users/{userId}/visits")
+    public List<Visit> getVisitsByUser(@PathVariable long userId,
+                                       @RequestParam(value = "fromDate", required = false) Long fromDate,
+                                       @RequestParam(value = "toDate", required = false) Long toDate) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "visitedAt");
+        if (fromDate == null && toDate == null) {
+            return visitService.getVisitsByUser(userId, sort);
+        } else if (fromDate == null) {
+            return visitService.getVisitByUserAndVisitedAtLessThan(userId, toDate, sort);
+        } else if (toDate == null) {
+            return visitService.getVisitByUserAndVisitedAtMoreThan(userId, fromDate, sort);
+        }
+
+        return visitService.getVisitByUserAndWith(userId, fromDate, toDate, sort);
     }
 }

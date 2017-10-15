@@ -11,7 +11,7 @@ public class FileManager {
         throw new IllegalStateException();
     }
 
-    public static File[] getFilesInFolder(String jsonDataConfigFolder) {
+    public static File[] readFilesInFolder(String jsonDataConfigFolder) {
         File folder = new File(jsonDataConfigFolder);
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles == null) {

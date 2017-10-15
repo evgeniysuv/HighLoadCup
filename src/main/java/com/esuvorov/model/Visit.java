@@ -13,11 +13,11 @@ public class Visit {
     private Long id;
 
     @OneToOne
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "USER_ID")
     private User user;
 
     @OneToOne
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "LOCATION_ID")
     private Location location;
 
     @Column(name = "VISITED_AT")

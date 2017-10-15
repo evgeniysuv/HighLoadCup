@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.esuvorov.utils.FileManager.getFilesInFolder;
+import static com.esuvorov.utils.FileManager.readFilesInFolder;
 
 @Service
 public class EntityExtractor {
@@ -43,7 +43,7 @@ public class EntityExtractor {
 
     @PostConstruct
     public void init() throws IOException, ParseException {
-        File[] filesInFolder = getFilesInFolder(jsonDataConfigFolder);
+        File[] filesInFolder = readFilesInFolder(jsonDataConfigFolder);
         for (File jsonFile : filesInFolder) {
             if (checkFileType(jsonFile, "users")) {
                 parseUserJson(jsonFile);
@@ -55,6 +55,10 @@ public class EntityExtractor {
         Arrays.stream(filesInFolder)
                 .filter(file -> checkFileType(file, "visit"))
                 .forEach(this::parseVisitJson);
+    }
+
+    private boolean checkFileType(File jsonFile, String entity) {
+        return jsonFile.getName().contains(entity);
     }
 
     @SuppressWarnings("unchecked")
@@ -87,6 +91,7 @@ public class EntityExtractor {
             location.setId(id);
             location.setDistance((Long) jsonObject.get("distance"));
             location.setCity((String) jsonObject.get("city"));
+
             location.setCountry((String) jsonObject.get("country"));
             location.setPlace((String) jsonObject.get("place"));
 
@@ -112,13 +117,12 @@ public class EntityExtractor {
 
             User user = userRepository.findById((Long) jsonObject.get("user")).orElse(null);
             Location location = locationRepository.findById((Long) jsonObject.get("location")).orElse(null);
+            if (user == null || location == null) {
+                throw new IllegalStateException();
+            }
             visit.setUser(user);
             visit.setLocation(location);
             visitRepository.save(visit);
         }
-    }
-
-    private boolean checkFileType(File jsonFile, String entity) {
-        return jsonFile.getName().contains(entity);
     }
 }

@@ -2,6 +2,7 @@ package com.esuvorov.controller;
 
 import com.esuvorov.model.Location;
 import com.esuvorov.service.LocationService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,4 +31,13 @@ public class LocationController {
         return service.getLocation(id);
     }
 
+    @GetMapping(value = "/{id}/avg")
+    public ResultAvg avg(@PathVariable long id) {
+        return new ResultAvg(id);
+    }
+
+    @AllArgsConstructor
+    private class ResultAvg {
+        private long avg;
+    }
 }

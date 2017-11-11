@@ -18,10 +18,7 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-
-import static com.esuvorov.utils.FileManager.readFilesInFolder;
 
 @Service
 public class EntityExtractor {
@@ -43,18 +40,18 @@ public class EntityExtractor {
 
     @PostConstruct
     public void init() throws IOException, ParseException {
-        File[] filesInFolder = readFilesInFolder(jsonDataConfigFolder);
-        for (File jsonFile : filesInFolder) {
-            if (checkFileType(jsonFile, "users")) {
-                parseUserJson(jsonFile);
-            } else if (checkFileType(jsonFile, "location")) {
-                parseLocationJson(jsonFile);
-            }
-        }
-
-        Arrays.stream(filesInFolder)
-                .filter(file -> checkFileType(file, "visit"))
-                .forEach(this::parseVisitJson);
+//        File[] filesInFolder = readFilesInFolder(jsonDataConfigFolder);
+//        for (File jsonFile : filesInFolder) {
+//            if (checkFileType(jsonFile, "users")) {
+//                parseUserJson(jsonFile);
+//            } else if (checkFileType(jsonFile, "location")) {
+//                parseLocationJson(jsonFile);
+//            }
+//        }
+//
+//        Arrays.stream(filesInFolder)
+//                .filter(file -> checkFileType(file, "visit"))
+//                .forEach(this::parseVisitJson);
     }
 
     private boolean checkFileType(File jsonFile, String entity) {

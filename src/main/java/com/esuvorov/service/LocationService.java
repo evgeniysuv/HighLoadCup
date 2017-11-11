@@ -28,4 +28,8 @@ public class LocationService {
     public Location getLocation(long id) {
         return repository.findById(id).orElse(null);
     }
+
+    public double getAverageMark(long id) {
+        return repository.getAvgMarkByLocation(id);
+    }
 }

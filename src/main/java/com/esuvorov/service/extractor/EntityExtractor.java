@@ -1,4 +1,4 @@
-package com.esuvorov.service;
+package com.esuvorov.service.extractor;
 
 import com.esuvorov.model.Location;
 import com.esuvorov.model.User;

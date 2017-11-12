@@ -2,8 +2,8 @@ package com.esuvorov.controller;
 
 import com.esuvorov.model.Visit;
 import com.esuvorov.service.VisitService;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,18 +29,9 @@ public class VisitController {
     }
 
     @GetMapping(value = "/users/{userId}/visits")
-    public List<Visit> getVisitsByUser(@PathVariable long userId,
-                                       @RequestParam(value = "fromDate", required = false) Long fromDate,
-                                       @RequestParam(value = "toDate", required = false) Long toDate) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "visitedAt");
-        if (fromDate == null && toDate == null) {
-            return visitService.getVisitsByUser(userId, sort);
-        } else if (fromDate == null) {
-            return visitService.getVisitByUserAndVisitedAtLessThan(userId, toDate, sort);
-        } else if (toDate == null) {
-            return visitService.getVisitByUserAndVisitedAtMoreThan(userId, fromDate, sort);
-        }
-
-        return visitService.getVisitByUserAndWith(userId, fromDate, toDate, sort);
+    public JSONObject getVisitsByUser(@PathVariable long userId,
+                                      @RequestParam(value = "fromDate", required = false) Long fromDate,
+                                      @RequestParam(value = "toDate", required = false) Long toDate) {
+        return visitService.findByUserETC();
     }
 }

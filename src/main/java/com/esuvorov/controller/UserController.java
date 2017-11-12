@@ -32,9 +32,4 @@ public class UserController {
     }
 
 
-//    @GetMapping(value = "{id}/visits")
-//    public List<Location> getVisitsByUser(@PathVariable long id){
-//        return userService.getVisitsByUser(id);
-//    }
-
 }

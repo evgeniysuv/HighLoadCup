@@ -3,6 +3,7 @@ package com.esuvorov.repository;
 import com.esuvorov.model.Visit;
 import lombok.NonNull;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface VisitRepository extends PagingAndSortingRepository<Visit, Long>
     List<Visit> findByUserIdAndVisitedAtGreaterThan(Long userId, Long visitedAt, Sort sort);
 
     List<Visit> findByUserAndVisitedAtLessThan(Long userId, Long visitedAt, Sort sort);
+
+    @Query("select v.mark, v.visitedAt, v.location.place from Visit v order by v.visitedAt")
+    List<String[]> findByUserETC();
 }

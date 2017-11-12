@@ -48,7 +48,6 @@ public class VisitService {
         return repository.findByUserAndVisitedAtLessThan(userId, toDate, sort);
     }
 
-
     @SuppressWarnings("unchecked")
     public JSONObject findByUserETC() {
         JSONObject visitsJson = new JSONObject();

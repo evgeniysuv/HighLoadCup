@@ -16,7 +16,7 @@ public class FileManager {
         File[] listOfFiles = folder.listFiles();
         if (listOfFiles == null) {
             LOGGER.error("No files found in " + jsonDataConfigFolder);
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("No files found in " + jsonDataConfigFolder);
         }
         return listOfFiles;
     }

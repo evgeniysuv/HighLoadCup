@@ -29,7 +29,7 @@ public class LocationService {
         return repository.findById(id).orElse(null);
     }
 
-    public double getAverageMark(long id) {
-        return repository.getAvgMarkByLocation(id);
+    public double getAverageMark(Long id, Long fromDate, Long toDate, Long fromAge, Long toAge, String gender) {
+        return repository.getAvgMarkByLocation(id, fromDate, toDate, fromAge, toAge, gender);
     }
 }

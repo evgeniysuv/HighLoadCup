@@ -4,10 +4,7 @@ import com.esuvorov.model.Location;
 import com.esuvorov.service.LocationService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -33,8 +30,13 @@ public class LocationController {
     }
 
     @GetMapping(value = "/{id}/avg")
-    public ResultAvg avg(@PathVariable long id) {
-        double averageMark = service.getAverageMark(id);
+    public ResultAvg avg(@PathVariable Long id,
+                         @RequestParam(value = "fromDate", required = false) Long fromDate,
+                         @RequestParam(value = "toDate", required = false) Long toDate,
+                         @RequestParam(value = "fromAge", required = false) Long fromAge,
+                         @RequestParam(value = "toAge", required = false) Long toAge,
+                         @RequestParam(value = "gender", required = false) String gender) {
+        double averageMark = service.getAverageMark(id, fromDate, toDate, fromAge, toAge, gender);
         return new ResultAvg(averageMark);
     }
 

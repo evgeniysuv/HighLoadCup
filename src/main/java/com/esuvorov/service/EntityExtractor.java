@@ -18,7 +18,10 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+
+import static com.esuvorov.utils.FileManager.readFilesInFolder;
 
 @Service
 public class EntityExtractor {
@@ -26,6 +29,10 @@ public class EntityExtractor {
     private final UserRepository userRepository;
     private final LocationRepository locationRepository;
     private final VisitRepository visitRepository;
+
+    @Value("${load}")
+    private boolean loadData;
+
     @Value("${json.config.folder}")
     private String jsonDataConfigFolder;
 
@@ -40,18 +47,21 @@ public class EntityExtractor {
 
     @PostConstruct
     public void init() throws IOException, ParseException {
-//        File[] filesInFolder = readFilesInFolder(jsonDataConfigFolder);
-//        for (File jsonFile : filesInFolder) {
-//            if (checkFileType(jsonFile, "users")) {
-//                parseUserJson(jsonFile);
-//            } else if (checkFileType(jsonFile, "location")) {
-//                parseLocationJson(jsonFile);
-//            }
-//        }
-//
-//        Arrays.stream(filesInFolder)
-//                .filter(file -> checkFileType(file, "visit"))
-//                .forEach(this::parseVisitJson);
+        if (!loadData)
+            return;
+
+        File[] filesInFolder = readFilesInFolder(jsonDataConfigFolder);
+        for (File jsonFile : filesInFolder) {
+            if (checkFileType(jsonFile, "users")) {
+                parseUserJson(jsonFile);
+            } else if (checkFileType(jsonFile, "location")) {
+                parseLocationJson(jsonFile);
+            }
+        }
+
+        Arrays.stream(filesInFolder)
+                .filter(file -> checkFileType(file, "visit"))
+                .forEach(this::parseVisitJson);
     }
 
     private boolean checkFileType(File jsonFile, String entity) {

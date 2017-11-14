@@ -21,5 +21,5 @@ public interface VisitRepository extends PagingAndSortingRepository<Visit, Long>
     List<Visit> findByUserAndVisitedAtLessThan(Long userId, Long visitedAt, Sort sort);
 
     @Query("select v.mark, v.visitedAt, v.location.place from Visit v order by v.visitedAt")
-    List<String[]> findByUserETC();
+    List<String[]> findByUserAndByDateAndByCountryAndByDistance();
 }

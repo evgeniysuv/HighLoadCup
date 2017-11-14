@@ -32,6 +32,6 @@ public class VisitController {
     public JSONObject getVisitsByUser(@PathVariable long userId,
                                       @RequestParam(value = "fromDate", required = false) Long fromDate,
                                       @RequestParam(value = "toDate", required = false) Long toDate) {
-        return visitService.findByUserETC();
+        return visitService.findVisits();
     }
 }

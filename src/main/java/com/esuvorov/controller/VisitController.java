@@ -29,9 +29,11 @@ public class VisitController {
     }
 
     @GetMapping(value = "/users/{userId}/visits")
-    public JSONObject getVisitsByUser(@PathVariable long userId,
+    public JSONObject getVisitsByUser(@PathVariable Long userId,
                                       @RequestParam(value = "fromDate", required = false) Long fromDate,
-                                      @RequestParam(value = "toDate", required = false) Long toDate) {
-        return visitService.findVisits();
+                                      @RequestParam(value = "toDate", required = false) Long toDate,
+                                      @RequestParam(value = "country", required = false) String country,
+                                      @RequestParam(value = "distance", required = false) Long distance) {
+        return visitService.findVisits(userId, fromDate, toDate, country, distance);
     }
 }

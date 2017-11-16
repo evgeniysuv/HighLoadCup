@@ -11,8 +11,8 @@ public interface LocationRepository extends PagingAndSortingRepository<Location,
     @Query("select avg(v.mark) from Visit v " +
             "where " +
             "v.location.id = :locationId and " +
-            "(v.visitedAt >= :fromDate or :fromDate is null) and " +
-            "(v.visitedAt <= :toDate or :toDate is null) and " +
+            "(v.visitedAt > :fromDate or :fromDate is null) and " +
+            "(v.visitedAt < :toDate or :toDate is null) and " +
             "(v.user.birthDate >= :fromAge or :fromAge is null) and " +
             "(v.user.birthDate <= :toAge or :toAge is null) and " +
             "(v.user.gender = :gender or :gender is null)")

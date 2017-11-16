@@ -32,9 +32,10 @@ public class VisitService {
     }
 
     @SuppressWarnings("unchecked")
-    public JSONObject findVisits() {
+    public JSONObject findVisits(Long userId, Long fromDate, Long toDate, String country, Long distance) {
         JSONArray visitsArray = new JSONArray();
-        repository.findByUserAndByDateAndByCountryAndByDistance().forEach(object -> {
+        repository.findByUserAndByDateAndByCountryAndByDistance(userId, fromDate, toDate, country, distance)
+                .forEach(object -> {
             JSONObject visit = new JSONObject();
             visit.put("mark", object[0]);
             visit.put("visited_at", object[1]);

@@ -2,11 +2,9 @@ package com.esuvorov.controller;
 
 import com.esuvorov.model.User;
 import com.esuvorov.service.UserService;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,10 +24,13 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable long id) {
         return userService.getUser(id);
     }
 
-
+    @PostMapping("/{id}")
+    public User updateUser(@RequestBody JSONObject user, @PathVariable long id) {
+        return userService.updateUser(id, user);
+    }
 }

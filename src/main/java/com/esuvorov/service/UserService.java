@@ -8,7 +8,6 @@ import com.esuvorov.service.exceptions.UserNotFoundException;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,9 +22,6 @@ public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class);
     private final UserRepository userRepository;
 
-    @Value("${json.config.folder}")
-    private String jsonDataConfigFolder;
-
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -39,14 +35,6 @@ public class UserService {
 
     public Optional<User> getUser(long id) {
         return userRepository.findById(id);
-    }
-
-    public void addUser(User user) {
-        userRepository.save(user);
-    }
-
-    public List<User> getUserByLastName(String lastName) {
-        return userRepository.findUsersByLastName(lastName);
     }
 
     public User updateUser(long id, JSONObject newUser) {

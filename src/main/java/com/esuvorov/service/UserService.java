@@ -2,6 +2,8 @@ package com.esuvorov.service;
 
 import com.esuvorov.model.User;
 import com.esuvorov.repository.UserRepository;
+import com.esuvorov.service.exceptions.InvalidDataException;
+import com.esuvorov.service.exceptions.UserAlreadyExistsException;
 import com.esuvorov.service.exceptions.UserNotFoundException;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.Long.parseLong;
 import static java.lang.String.valueOf;
 
 @Service
@@ -51,10 +54,33 @@ public class UserService {
         if (user == null)
             throw new UserNotFoundException(id);
 
-        user.setFirstName(valueOf(newUser.get("first_name")));
-        user.setLastName(valueOf(newUser.get("last_name")));
-        user.setEmail(valueOf(newUser.get("email")));
-        user.setBirthDate(Long.parseLong(valueOf(newUser.get("birth_date"))));
+        user.setFirstName(notNull(newUser.get("first_name")));
+        user.setLastName(notNull(newUser.get("last_name")));
+        user.setEmail(notNull(newUser.get("email")));
+        user.setBirthDate(parseLong(notNull(newUser.get("birth_date"))));
+        return userRepository.save(user);
+    }
+
+    private String notNull(Object jsonParam) {
+        if (jsonParam == null)
+            throw new InvalidDataException();
+        return valueOf(jsonParam);
+    }
+
+    public User createUser(JSONObject newUser) {
+        long userId = parseLong(notNull(newUser.get("id")));
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null)
+            throw new UserAlreadyExistsException(userId);
+
+        user = new User();
+        user.setId(userId);
+        user.setFirstName(notNull(newUser.get("first_name")));
+        user.setLastName(notNull(newUser.get("last_name")));
+        user.setEmail(notNull(newUser.get("email")));
+        user.setBirthDate(parseLong(notNull(newUser.get("birth_date"))));
+        user.setGender(notNull(newUser.get("gender")));
+
         return userRepository.save(user);
     }
 }

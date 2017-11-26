@@ -33,4 +33,9 @@ public class UserController {
     public User updateUser(@RequestBody JSONObject user, @PathVariable long id) {
         return userService.updateUser(id, user);
     }
+
+    @PostMapping("/new")
+    public User createUser(@RequestBody JSONObject user) {
+        return userService.createUser(user);
+    }
 }

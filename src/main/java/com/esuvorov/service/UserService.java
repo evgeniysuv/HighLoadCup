@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static java.lang.Long.parseLong;
 import static java.lang.String.valueOf;
@@ -33,8 +32,11 @@ public class UserService {
         return users;
     }
 
-    public Optional<User> getUser(long id) {
-        return userRepository.findById(id);
+    public User getUser(long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null)
+            throw new UserNotFoundException(id);
+        return user;
     }
 
     public User updateUser(long id, JSONObject newUser) {

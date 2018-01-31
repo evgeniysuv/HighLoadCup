@@ -5,25 +5,20 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.http.MediaType;
 import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.io.IOException;
 import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class LocationControllerTest extends ControllerTest {
 
     @Test
     public void getLocations() throws Exception {
-//        String jsonResult = getResultJson("/locations");
-//        ObjectMapper mapper = new ObjectMapper();
-//        List<Location> locations = mapper.readValue(jsonResult, new TypeReference<List<Location>>() {});
+        // TODO: 1/20/18  Need to restrict result
     }
 
     @Test
@@ -44,14 +39,6 @@ public class LocationControllerTest extends ControllerTest {
         Assert.assertEquals((Double) 2.19, value);
     }
 
-    private String getResultJson(String urlTemplate) throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.get(urlTemplate)
-                .accept(new MediaType("application", "json")))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_JSON_UTF8))
-                .andReturn().getResponse().getContentAsString();
-    }
-
     @Test
     public void locationNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/locations/9999999")
@@ -67,4 +54,6 @@ public class LocationControllerTest extends ControllerTest {
                 o, APPLICATION_JSON, mockHttpOutputMessage);
         return mockHttpOutputMessage.getBodyAsString();
     }
+
+
 }

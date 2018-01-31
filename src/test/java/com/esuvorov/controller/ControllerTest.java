@@ -13,6 +13,8 @@ import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.io.IOException;
@@ -21,6 +23,7 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @RunWith(SpringRunner.class)
@@ -60,5 +63,13 @@ public abstract class ControllerTest {
     @Before
     public void setup() throws Exception {
         mockMvc = webAppContextSetup(webApplicationContext).build();
+    }
+
+    protected String getResultJson(String urlTemplate) throws Exception {
+        return mockMvc.perform(MockMvcRequestBuilders.get(urlTemplate)
+                .accept(new MediaType("application", "json")))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_JSON_UTF8))
+                .andReturn().getResponse().getContentAsString();
     }
 }

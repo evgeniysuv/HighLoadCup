@@ -1,42 +1,52 @@
 package com.esuvorov.controller;
 
 import com.esuvorov.model.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Arrays;
-
-import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserControllerTest extends ControllerTest {
 
-    @Autowired
-    void setConverters(HttpMessageConverter<?>[] converters) {
-
-        mappingJackson2HttpMessageConverter = Arrays.stream(converters)
-                .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
-                .findAny()
-                .orElse(null);
-
-        assertNotNull("the JSON message converter must not be null", mappingJackson2HttpMessageConverter);
+    @Test
+    public void getUser() throws Exception {
+        String userJson = getResultJson("users/1");
+        ObjectMapper mapper = new ObjectMapper();
+        User user = mapper.readValue(userJson, User.class);
+        Assert.assertNotNull(user);
+        Assert.assertEquals("Светлана", user.getFirstName());
     }
-//
-//    @Test
-//    public void getLocations() throws Exception {
-//
-//    }
-//
-//    @Test
-//    public void getLocation() throws Exception {
-//    }
-//
-//    @Test
-//    public void avg() throws Exception {
-//    }
+
+    @Test
+    public void getUserByFilter() {
+
+    }
+
+    @Test
+    public void updateUser() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/users/5")
+                .contentType(MediaType.APPLICATION_JSON_UTF8).content("  {\n" +
+                        "        \"email\": jessiepinkman@gmail.com,\n" +
+                        "        \"first_name\": \"Jessie\",\n" +
+                        "        \"birth_date\": 616550400\n" +
+                        "    } "))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void updateUserWithEmptyEmail() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/users/5")
+                .contentType(MediaType.APPLICATION_JSON_UTF8).content("  {\n" +
+                        "        \"email\": null,\n" +
+                        "        \"first_name\": \"Jessie\",\n" +
+                        "        \"last_name\": \"Pinkman\",\n" +
+                        "        \"birth_date\": 616550400\n" +
+                        "    } "))
+                .andExpect(status().isBadRequest());
+    }
 
     @Test
     public void userNotFound() throws Exception {
